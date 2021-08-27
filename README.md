@@ -1,2 +1,2 @@
 # Friendly Budget
-Web application to manage your monthly expenses.
+Client server application to manage your monthly expenses.
