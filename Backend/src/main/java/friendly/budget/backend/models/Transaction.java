@@ -10,12 +10,11 @@ public class Transaction {
     private String date;
     private String description;
 
-    //constructor
     public Transaction (User user, float value, String date, String description){
         this.user = user;
         this.value = value;
         this.date = date;
-        this.description = date;
+        this.description = description;
     }
 
     //getters and setters
@@ -34,4 +33,5 @@ public class Transaction {
     public String getDescription() {
         return description;
     }
+
 }

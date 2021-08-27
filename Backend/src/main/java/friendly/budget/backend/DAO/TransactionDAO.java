@@ -1,6 +1,5 @@
 package friendly.budget.backend.DAO;
 
-import friendly.budget.backend.model.datafile.DataFile;
 import friendly.budget.backend.models.Transaction;
 import friendly.budget.backend.models.User;
 
@@ -17,8 +16,7 @@ import java.util.List;
 public class TransactionDAO {
 
     @Autowired
-    private JdbcTemplate jdbcTemplate;
-
+    private static JdbcTemplate jdbcTemplate;
 
     /**
      * Funtion that models the return from the list() function
@@ -37,9 +35,11 @@ public class TransactionDAO {
      * 
      * @param transaction The inserting transaction
      * */
-    public void insert (Transaction transaction) {
+    public static List<Transaction> insert (Transaction transaction, User user) {
 
         jdbcTemplate.update("insert into TRANSACTIONS (NAME, DATE, VALUE, DESCRIPTION) values (?,?,?,?);", transaction.getUser().getName(), transaction.getDate(),transaction.getValue(), transaction.getDescription());
+
+        return TransactionDAO.list (user);
     }
 
     /**
@@ -47,16 +47,8 @@ public class TransactionDAO {
      * 
      * @return Data from DB
      **/
-    public List<Transaction> list (User user) {
-        final List<Transaction> resultList = jdbcTemplate.query("select DATE,VALUE,DESCRIPTION from USERS where NAME = (?);", TransactionDAO::mapTransactionRow,user.getName());
-        if(resultList.isEmpty()){
-            return null;
-        }
-        return resultList;
+    public static List<Transaction> list (User user) {
+        return jdbcTemplate.query("select DATE,VALUE,DESCRIPTION from TRANSACTIONS where NAME = (?);", TransactionDAO::mapTransactionRow,user.getName());
     }
-
-
-
-
 
 }
