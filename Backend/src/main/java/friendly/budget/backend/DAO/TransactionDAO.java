@@ -3,7 +3,6 @@ package friendly.budget.backend.DAO;
 import friendly.budget.backend.models.Transaction;
 import friendly.budget.backend.models.User;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -15,7 +14,6 @@ import java.util.List;
 @Repository
 public class TransactionDAO {
 
-    @Autowired
     private static JdbcTemplate jdbcTemplate;
 
     /**

@@ -12,7 +12,6 @@ import java.util.List;
 @Repository
 public class  UserDAO {
 
-    @Autowired
     private static JdbcTemplate jdbcTemplate;
 
     private static User mapUserRow(ResultSet rs, int rowNum) {
