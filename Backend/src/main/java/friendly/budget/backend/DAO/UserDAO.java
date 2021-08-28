@@ -12,7 +12,8 @@ import java.util.List;
 @Repository
 public class  UserDAO {
 
-    private static JdbcTemplate jdbcTemplate;
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     private static User mapUserRow(ResultSet rs, int rowNum) {
         try {
@@ -22,7 +23,7 @@ public class  UserDAO {
         }
     }
 
-    public static User login (String username) {
+    public User login (String username) {
         final List<User> query = jdbcTemplate.query("select NAME from USERS where NAME = (?);"
                 , UserDAO::mapUserRow, username);
         if (query.isEmpty()) return null;

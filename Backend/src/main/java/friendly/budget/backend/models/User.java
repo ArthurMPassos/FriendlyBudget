@@ -1,5 +1,6 @@
 package friendly.budget.backend.models;
 
+
 public class User {
 
     final private String name;

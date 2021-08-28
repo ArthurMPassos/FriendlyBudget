@@ -3,6 +3,7 @@ package friendly.budget.backend.DAO;
 import friendly.budget.backend.models.Transaction;
 import friendly.budget.backend.models.User;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -14,7 +15,8 @@ import java.util.List;
 @Repository
 public class TransactionDAO {
 
-    private static JdbcTemplate jdbcTemplate;
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     /**
      * Funtion that models the return from the list() function
@@ -22,7 +24,11 @@ public class TransactionDAO {
      **/
     private static Transaction mapTransactionRow(ResultSet rs, int rowNum) {
         try {
-            return new Transaction(new User(rs.getString("NAME")),rs.getFloat("VALUE"),rs.getString("DATE"),rs.getString("DESCRIPTION"));
+            return new Transaction(
+                    new User(rs.getString("NAME")),
+                    rs.getFloat("VALUE"),
+                    rs.getString("DATE"),
+                    rs.getString("DESCRIPTION"));
         } catch (SQLException e) {
             throw new RuntimeException("Failure to map db row to Transaction", e);
         }
@@ -33,11 +39,14 @@ public class TransactionDAO {
      * 
      * @param transaction The inserting transaction
      * */
-    public static List<Transaction> insert (Transaction transaction, User user) {
+    public List<Transaction> insert (Transaction transaction, User user) {
 
-        jdbcTemplate.update("insert into TRANSACTIONS (NAME, DATE, VALUE, DESCRIPTION) values (?,?,?,?);", transaction.getUser().getName(), transaction.getDate(),transaction.getValue(), transaction.getDescription());
+        jdbcTemplate.update(
+                "insert into TRANSACTIONS (NAME, DATE, VALUE, DESCRIPTION) values (?,?,?,?);",
+                transaction.getUser().getName(), transaction.getDate(),transaction.getValue(),
+                transaction.getDescription());
 
-        return TransactionDAO.list (user);
+        return (new TransactionDAO()).list (user);
     }
 
     /**
@@ -45,8 +54,9 @@ public class TransactionDAO {
      * 
      * @return Data from DB
      **/
-    public static List<Transaction> list (User user) {
-        return jdbcTemplate.query("select DATE,VALUE,DESCRIPTION from TRANSACTIONS where NAME = (?);", TransactionDAO::mapTransactionRow,user.getName());
+    public List<Transaction> list (User user) {
+        return jdbcTemplate.query("select DATE,VALUE,DESCRIPTION from TRANSACTIONS where NAME = (?);",
+                TransactionDAO::mapTransactionRow,user.getName());
     }
 
 }
