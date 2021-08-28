@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="style.css" media="screen" />
+
+    <title>Friendly Budget</title>
+  </head>
+  <body>
+      
+      <nav class="cima">
+        
+      </nav>
+      <center>
+      
+      <div class="externa">
+          
+          <div class="add">
+              
+              <div class="ajuste">
+                 
+
+                      <input type="text" name="name"   id="name" class="nome" placeholder="Name"> 
+                      <input type="text" name="value"  id="value" class="valor" placeholder="Value" >
+                      <input type="date" name="date"   id="date" class="data">
+
+
+                      <input type="radio" name="calculo" checked>Gains
+                      <input type="radio" name="calculo" onclick="valorNegativo()" id="expense" >Expense
+
+
+                      <button class="btnAdd" onclick="adicionarTabela()">ADD</button>
+
+                
+              </div>
+          </div>
+          
+          
+
+          <div class="tabela" >
+              <table class= "bordaExterna colunas" id="idtab">
+                <thead class= "borda ">
+                    <tr>
+                        <th class= "borda bordaExterna">Transaction</th>
+                        <th class= "borda bordaExterna">Value</th>
+                        <th class= "borda bordaExterna">Date</th>
+                    </tr>
+                </thead>
+                
+                <tbody class= "borda">
+                    <tr>
+                        
+                        
+                       
+                    </tr>
+                    
+                </tbody>
+              
+              
+              </table>
+              
+              
+          </div>
+          
+          
+          <div class= "total">
+              
+              <div class="txtTotal">Total: R$</div><div id="somaTotal"></div>
+          </div>
+          
+          
+          
+          
+      
+      </div>
+          
+      </center>
+
+      
+      <script>
+          
+          var globalNegativo = 0;
+          
+          const tabelaTotal = [ 
+              { "name": "compras", "value": 299.00, "date": "12/02/2021"  },  
+              { "name": "agiota", "value": -500.00, "date": "02/02/2022"  }, 
+              {"name": "roupas", "value": 15099.40, "date": "12/02/1990"  }]
+          
+          
+        
+          window.load = mostrarTabela();
+ 
+          
+
+          
+          function mostrarTabela(){
+            var total = 0;
+              
+             
+            for (let i = 0; i < tabelaTotal.length; i++) {
+                 
+                 total += parseFloat(tabelaTotal[i].value);
+                  
+                  var table = document.getElementById("idtab");
+
+
+                  var row = table.insertRow(table.length);
+                  var cell1 = row.insertCell(0);
+                  var cell2 = row.insertCell(1);
+                  var cell3 = row.insertCell(2);
+                  cell1.innerHTML = tabelaTotal[i].name;
+                  cell2.innerHTML = tabelaTotal[i].value;
+                  cell3.innerHTML = tabelaTotal[i].date;
+
+                    
+
+              }  
+            
+            document.getElementById("somaTotal").innerHTML = total;
+              
+          }
+
+          function adicionarTabela(){
+
+              var nome = document.getElementById("name").value;
+              var valor = document.getElementById("value").value;
+              var data = document.getElementById("date").value;
+              var exp = document.getElementById("expense").value;
+              
+              valor = parseFloat(valor)
+              
+   
+              
+              var textoData = "";
+              
+              var textoData = '' + data[8] + data[9] + "/" + data[5] + data[6] + "/" + data[0] + data[1] + data[2] + data[3];
+              
+              
+   
+              var table = document.getElementById("idtab");
+              var row = table.insertRow(table.length);
+              var cell1 = row.insertCell(0);
+              var cell2 = row.insertCell(1);
+              var cell3 = row.insertCell(2);
+              cell1.innerHTML = nome;
+              
+              if (globalNegativo == 1){
+                  if (valor<0){
+                      valor *= -1;
+                  }
+                  
+                  cell2.innerHTML = 0 - valor;
+              }
+              else{
+                  cell2.innerHTML = valor;
+              }
+              
+              cell3.innerHTML = textoData;    
+          }
+          
+          
+          function valorNegativo(){
+              
+              globalNegativo = 1;
+              
+          }
+          
+      </script>
+      
+  </body>
+</html>
+
+
+
+
+
