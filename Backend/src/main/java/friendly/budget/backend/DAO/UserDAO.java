@@ -3,13 +3,14 @@ package friendly.budget.backend.DAO;
 import friendly.budget.backend.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-@Repository
+@Controller
 public class  UserDAO {
 
     @Autowired
@@ -22,12 +23,12 @@ public class  UserDAO {
             throw new RuntimeException("Failure to map db row to Transaction", e);
         }
     }
-
-    public User login (String username) {
+    @PostMapping(path="/login")
+    public @ResponseBody Boolean login (@RequestBody String username) {
         final List<User> query = jdbcTemplate.query("select NAME from USERS where NAME = (?);"
                 , UserDAO::mapUserRow, username);
-        if (query.isEmpty()) return null;
-        return query.get(0);
+        if (query.isEmpty()) return false;
+        else{return true;}
     }
 
 }

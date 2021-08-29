@@ -8,11 +8,18 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-@Repository
+@Controller
 public class TransactionDAO {
 
     @Autowired
@@ -39,7 +46,8 @@ public class TransactionDAO {
      * 
      * @param transaction The inserting transaction
      * */
-    public List<Transaction> insert (Transaction transaction, User user) {
+    @PostMapping(path="/add")
+    public @ResponseBody List<Transaction> insert (Transaction transaction, User user) {
 
         jdbcTemplate.update(
                 "insert into TRANSACTIONS (NAME, DATE, VALUE, DESCRIPTION) values (?,?,?,?);",
@@ -54,7 +62,8 @@ public class TransactionDAO {
      * 
      * @return Data from DB
      **/
-    public List<Transaction> list (User user) {
+    @GetMapping(path="/transactions")
+    public @ResponseBody List<Transaction> list (User user) {
         return jdbcTemplate.query("select DATE,VALUE,DESCRIPTION from TRANSACTIONS where NAME = (?);",
                 TransactionDAO::mapTransactionRow,user.getName());
     }

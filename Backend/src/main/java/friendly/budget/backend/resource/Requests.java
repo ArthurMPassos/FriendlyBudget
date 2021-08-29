@@ -18,16 +18,17 @@ public class Requests {
     private final UserDAO userDAO = new UserDAO();
 
 
-    @POST
-    @Path("/login")
-    public boolean login(@RequestBody final String name) {
-        final User notAuthenticatedUser = userDAO.login(name);
-        if (notAuthenticatedUser != null){
-            this.user = notAuthenticatedUser;
-            return true;
-        }
-        return false;
-    }
+    //@POST
+    //@Path("/login")
+
+    //public boolean login(@RequestBody final String name) {
+    //    final User notAuthenticatedUser = userDAO.login(name);
+    //    if (notAuthenticatedUser != null){
+    //        this.user = notAuthenticatedUser;
+    //        return true;
+    //    }
+    //    return false;
+    //}
 
     @PUT
     @Path("/add")
