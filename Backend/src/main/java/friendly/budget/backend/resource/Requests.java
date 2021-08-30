@@ -3,55 +3,56 @@ package friendly.budget.backend.resource;
 import friendly.budget.backend.DAO.TransactionDAO;
 import friendly.budget.backend.DAO.UserDAO;
 import friendly.budget.backend.models.Transaction;
+import friendly.budget.backend.models.TransactionDTO;
 import friendly.budget.backend.models.User;
 import friendly.budget.backend.util.JsonUtil;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
 import javax.ws.rs.*;
 import java.util.List;
 
-@Path("")
+@Controller
 public class Requests {
 
     private User user;
     private final TransactionDAO transactionDAO = new TransactionDAO();
     private final UserDAO userDAO = new UserDAO();
 
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
-    //@POST
-    //@Path("/login")
-
-    //public boolean login(@RequestBody final String name) {
-    //    final User notAuthenticatedUser = userDAO.login(name);
-    //    if (notAuthenticatedUser != null){
-    //        this.user = notAuthenticatedUser;
-    //        return true;
-    //    }
-    //    return false;
-    //}
-
-    @PUT
-    @Path("/add")
-    public String add(@RequestBody final String json) {
-        final Transaction newTransaction = JsonUtil.fromJson(json, Transaction.class);
-
-
-        return JsonUtil.toJson( transactionDAO.insert( newTransaction, this.user ) );
+    @PostMapping(path="/login")
+    public @ResponseBody boolean login(@RequestBody final String name) {
+        final User notAuthenticatedUser = userDAO.login(name,jdbcTemplate);
+        if (notAuthenticatedUser != null){
+            this.user = notAuthenticatedUser;
+            return true;
+        }
+        return false;
     }
 
-    @GET
-    @Path("/transactions")
-    public String getTransactions() {
-        List<Transaction> list = (new TransactionDAO()).list(this.user);
+    //@PUT
+    @PutMapping(path="/add")
+    public @ResponseBody String add(@RequestBody final String json) {
+        final TransactionDTO transactionDTO = JsonUtil.fromJson(json, TransactionDTO.class);
+        return JsonUtil.toJson( transactionDAO.insert(new Transaction(this.user, transactionDTO.getValue(), transactionDTO.getDate(),transactionDTO.getDescription()) , this.user, jdbcTemplate) );
+    }
+
+
+    @GetMapping(path="/transactions")
+    public @ResponseBody String getTransactions() {
+        List<Transaction> list = (new TransactionDAO()).list(this.user,jdbcTemplate);
         return JsonUtil.toJson(list);
 
         //if (list==null) return "";
         //ArrayList<Transaction> arrayList = new ArrayList<Transaction>(list);
     }
 
-    @GET
-    @Path("/test")
-    public String test() {
+    @GetMapping(path="/test")
+    public @ResponseBody String test() {
         return "NICE TRY";
     }
 }

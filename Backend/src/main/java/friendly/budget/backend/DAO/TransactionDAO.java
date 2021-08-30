@@ -5,25 +5,12 @@ import friendly.budget.backend.models.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Repository;
-
-
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-@Controller
-public class TransactionDAO {
 
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
+public class TransactionDAO {
 
     /**
      * Funtion that models the return from the list() function
@@ -46,15 +33,15 @@ public class TransactionDAO {
      * 
      * @param transaction The inserting transaction
      * */
-    @PostMapping(path="/add")
-    public @ResponseBody List<Transaction> insert (Transaction transaction, User user) {
+    //@PostMapping(path="/add")
+    public List<Transaction> insert (Transaction transaction, User user, JdbcTemplate jdbcTemplate) {
 
         jdbcTemplate.update(
                 "insert into TRANSACTIONS (NAME, DATE, VALUE, DESCRIPTION) values (?,?,?,?);",
                 transaction.getUser().getName(), transaction.getDate(),transaction.getValue(),
                 transaction.getDescription());
 
-        return (new TransactionDAO()).list (user);
+        return (new TransactionDAO()).list (user, jdbcTemplate);
     }
 
     /**
@@ -62,9 +49,9 @@ public class TransactionDAO {
      * 
      * @return Data from DB
      **/
-    @GetMapping(path="/transactions")
-    public @ResponseBody List<Transaction> list (User user) {
-        return jdbcTemplate.query("select DATE,VALUE,DESCRIPTION from TRANSACTIONS where NAME = (?);",
+
+    public List<Transaction> list (User user, JdbcTemplate jdbcTemplate) {
+        return jdbcTemplate.query("select NAME,DATE,VALUE,DESCRIPTION from TRANSACTIONS where NAME = (?);",
                 TransactionDAO::mapTransactionRow,user.getName());
     }
 
