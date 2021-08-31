@@ -19,12 +19,11 @@
                   
               
               <p>Login</p>
-              <form action="calculo.html">
-                    <input type="text" name="login" class="username" placeholder="Username" required>
+
+                    <input type="text" id="idLogin" name="login" class="username" placeholder="Username" required>
                     
-                    <button class="btnLogin" type="submit">Enter</button>
-              
-               </form>
+                    <button class="btnLogin" onclick="login2()">Enter</button>
+
               
               </div>
               
@@ -34,7 +33,50 @@
              
       </center>
 
-      
+      <script>
+        function login2() {
+            console.log("GEY");
+            var name = document.getElementById("idLogin").value;
+            console.log(name);
+            var oReq = new XMLHttpRequest();
+            console.log(oReq);
+            oReq.responseType = "text";
+            console.log("GEY1");
+            oReq.onload = function() {
+                console.log(this.response);
+                // this.response vai retornar a string "true" ou "false"
+                if(eval(this.response)){
+                  //accountAutorized(name);
+                  window.location.href = "calculo.html";
+                  console.log(this.response);
+                  console.log("Deu certo");
+                }
+                else{
+                  console.log("num deu");
+                  accountNotAuthorized(name);
+                  
+                }
+            };
+            oReq.onerror = function(e) {
+                console.log("Something went wrong");
+            };
+            oReq.open("post", "http://localhost:8080/login", true);
+            oReq.send(name);
+        }
+
+        function addTransactions(transaction) {
+          var oReq = new XMLHttpRequest();
+          oReq.responseType = "text";
+          oReq.onload = function() {
+              showTransactions( JSON.parse(this.response));
+          };
+          oReq.onerror = function(e) {
+              console.log("Something went wrong");
+          };
+          oReq.open("put", "http://localhost:8080/add", true);
+          oReq.send(transaction);
+        }
+      </script>
 
       
   </body>
