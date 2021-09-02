@@ -35,13 +35,13 @@
 
       <script>
         function login2() {
-            console.log("GEY");
+        
             var name = document.getElementById("idLogin").value;
             console.log(name);
             var oReq = new XMLHttpRequest();
             console.log(oReq);
             oReq.responseType = "text";
-            console.log("GEY1");
+
             oReq.onload = function() {
                 console.log(this.response);
                 // this.response vai retornar a string "true" ou "false"
@@ -76,6 +76,8 @@
           oReq.open("put", "http://localhost:8080/add", true);
           oReq.send(transaction);
         }
+
+        
       </script>
 
       

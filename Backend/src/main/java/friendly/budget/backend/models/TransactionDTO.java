@@ -20,6 +20,12 @@ public class TransactionDTO {
         this.description = description;
     }
 
+    public TransactionDTO(Transaction transaction){
+        this.value = transaction.getValue();
+        this.date = transaction.getDate();
+        this.description = transaction.getDescription();
+    }
+
     public float getValue() {
         return value;
     }

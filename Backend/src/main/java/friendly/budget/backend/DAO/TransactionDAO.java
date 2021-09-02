@@ -1,6 +1,7 @@
 package friendly.budget.backend.DAO;
 
 import friendly.budget.backend.models.Transaction;
+import friendly.budget.backend.models.TransactionDTO;
 import friendly.budget.backend.models.User;
 
 import org.springframework.beans.factory.annotation.Autowired;

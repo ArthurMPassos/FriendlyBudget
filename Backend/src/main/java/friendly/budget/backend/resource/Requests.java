@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.ws.rs.*;
+import java.util.LinkedList;
 import java.util.List;
 
 @Controller
@@ -32,6 +33,7 @@ public class Requests {
             this.user = notAuthenticatedUser;
             return true;
         }
+        this.user = null;
         return false;
     }
 
@@ -40,17 +42,27 @@ public class Requests {
     @PutMapping(path="/add")
     public @ResponseBody String add(@RequestBody final String json) {
         final TransactionDTO transactionDTO = JsonUtil.fromJson(json, TransactionDTO.class);
-        return JsonUtil.toJson( transactionDAO.insert(new Transaction(this.user, transactionDTO.getValue(), transactionDTO.getDate(),transactionDTO.getDescription()) , this.user, jdbcTemplate) );
+        List<Transaction> rInsert = transactionDAO.insert(new Transaction(this.user, transactionDTO.getValue(),
+                transactionDTO.getDate(), transactionDTO.getDescription()), this.user, jdbcTemplate);
+
+        List<TransactionDTO> listTransDTO = new LinkedList<>();
+        for (Transaction transaction: rInsert) {
+            listTransDTO.add(new TransactionDTO(transaction));
+        }
+        return JsonUtil.toJson(listTransDTO);
     }
 
     @CrossOrigin(origins = "http://localhost:8080/")
     @GetMapping(path="/transactions")
     public @ResponseBody String getTransactions() {
         List<Transaction> list = (new TransactionDAO()).list(this.user,jdbcTemplate);
-        return JsonUtil.toJson(list);
 
-        //if (list==null) return "";
-        //ArrayList<Transaction> arrayList = new ArrayList<Transaction>(list);
+        List<TransactionDTO> listTransDTO = new LinkedList<>();
+        for (Transaction transaction: list) {
+            listTransDTO.add(new TransactionDTO(transaction));
+        }
+
+        return JsonUtil.toJson(listTransDTO);
     }
 
     @GetMapping(path="/test")
