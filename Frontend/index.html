@@ -37,22 +37,22 @@
         function login2() {
         
             var name = document.getElementById("idLogin").value;
-            console.log(name);
+            
             var oReq = new XMLHttpRequest();
-            console.log(oReq);
+            
             oReq.responseType = "text";
 
             oReq.onload = function() {
-                console.log(this.response);
+                
                 // this.response vai retornar a string "true" ou "false"
                 if(eval(this.response)){
                   //accountAutorized(name);
                   window.location.href = "calculo.html";
-                  console.log(this.response);
-                  console.log("Deu certo");
+                  
+                  
                 }
                 else{
-                  console.log("num deu");
+                  
                   accountNotAuthorized(name);
                   
                 }
@@ -77,7 +77,7 @@
           oReq.send(transaction);
         }
 
-        
+
       </script>
 
       

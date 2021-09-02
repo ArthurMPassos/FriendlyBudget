@@ -22,12 +22,12 @@
               <div class="ajuste">
                  
 
-                      <input type="text" name="name"   id="name" class="nome" placeholder="Name"> 
+                      <input type="text" name="description"   id="description" class="nome" placeholder="Name"> 
                       <input type="text" name="value"  id="value" class="valor" placeholder="Value" >
                       <input type="date" name="date"   id="date" class="data">
 
 
-                      <input type="radio" name="calculo" checked>Gains
+                      <input type="radio" name="calculo" onclick="valorPositivo()" checked>Gains
                       <input type="radio" name="calculo" onclick="valorNegativo()" id="expense" >Expense
 
 
@@ -84,21 +84,17 @@
           var globalNegativo = 0;
           
           //const tabelaTotal = [ 
-          //    { "name": "compras", "value": 299.00, "date": "12/02/2021"  },  
-          //    { "name": "agiota", "value": -500.00, "date": "02/02/2022"  }, 
-          //    {"name": "roupas", "value": 15099.40, "date": "12/02/1990"  }]
+          //    { "description": "compras", "value": 299.00, "date": "12/02/2021"  },  
+          //    { "description": "agiota", "value": -500.00, "date": "02/02/2022"  }, 
+          //    {"description": "roupas", "value": 15099.40, "date": "12/02/1990"  }]
           
+          //window.load = mostrarTabela(); 
+          listTransactions();
           
-        
-          window.load = mostrarTabela();
- 
-          
-
-          
-          function mostrarTabela(){
+          function mostrarTabela(tabelaTotal){
+            
             var total = 0;
-              
-             
+
             for (let i = 0; i < tabelaTotal.length; i++) {
                  
                  total += parseFloat(tabelaTotal[i].value);
@@ -110,7 +106,7 @@
                   var cell1 = row.insertCell(0);
                   var cell2 = row.insertCell(1);
                   var cell3 = row.insertCell(2);
-                  cell1.innerHTML = tabelaTotal[i].name;
+                  cell1.innerHTML = tabelaTotal[i].description;
                   cell2.innerHTML = tabelaTotal[i].value;
                   cell3.innerHTML = tabelaTotal[i].date;
 
@@ -122,55 +118,124 @@
               
           }
 
+          
+          
+          // -------------------------------
+          
+ 
+          // -----------------------------
           function adicionarTabela(){
 
-              var nome = document.getElementById("name").value;
+              var description = document.getElementById("description").value;
               var valor = document.getElementById("value").value;
               var data = document.getElementById("date").value;
               var exp = document.getElementById("expense").value;
               
               valor = parseFloat(valor)
               
-   
+              const tabelaEnviar = [];
               
               var textoData = "";
               
               var textoData = '' + data[8] + data[9] + "/" + data[5] + data[6] + "/" + data[0] + data[1] + data[2] + data[3];
+              var oReq = new XMLHttpRequest();
+              
+//   
+//              var table = document.getElementById("idtab");
+//              var row = table.insertRow(table.length);
+//              var cell1 = row.insertCell(0);
+//              var cell2 = row.insertCell(1);
+//              var cell3 = row.insertCell(2);
+              
+//              cell1.innerHTML = nome;
+//            
+              var dict = {};
+              dict.description = description;
               
               
-   
-              var table = document.getElementById("idtab");
-              var row = table.insertRow(table.length);
-              var cell1 = row.insertCell(0);
-              var cell2 = row.insertCell(1);
-              var cell3 = row.insertCell(2);
-              cell1.innerHTML = nome;
               
               if (globalNegativo == 1){
                   if (valor<0){
                       valor *= -1;
                   }
                   
-                  cell2.innerHTML = 0 - valor;
+//                  cell2.innerHTML = 0 - valor;
+                  dict.value = 0-valor;
               }
               else{
-                  cell2.innerHTML = valor;
+//                  cell2.innerHTML = valor;
+                  dict.value = valor;
               }
               
-              cell3.innerHTML = textoData;    
+//              cell3.innerHTML = textoData;    
+                dict.date = textoData;
+              
+          
+
+            enviarAdd(dict);
+            
+              
+            
           }
           
+          function enviarAdd(dict){
+              
+            
+            var oReq = new XMLHttpRequest();
+            
+            oReq.responseType = "text";
           
+            oReq.onload = function() {
+                  
+                location.reload();
+                mostrarTabela(JSON.parse(this.response));
+                
+
+            };
+            oReq.onerror = function(e) {
+                console.log("Something went wrong");
+            };
+            oReq.open("put", "http://localhost:8080/add", true);
+            
+            oReq.send(JSON.stringify(dict));
+              
+          }
+
+          function listTransactions(){
+            var oReq = new XMLHttpRequest();
+            
+            oReq.responseType = "text";
+            
+            oReq.onload = function() {
+
+                //location.reload();
+                mostrarTabela(JSON.parse(this.response));
+
+            };
+            oReq.onerror = function(e) {
+                console.log("Something went wrong");
+            };
+            oReq.open("get", "http://localhost:8080/transactions", true);
+            oReq.send();
+          }
+          
+          function valorPositivo(){
+              
+              globalNegativo = 0;
+              
+          }
           function valorNegativo(){
               
               globalNegativo = 1;
               
           }
+
           
       </script>
       
   </body>
 </html>
+
 
 
 
