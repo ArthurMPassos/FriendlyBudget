@@ -1,56 +1,55 @@
-var globalNegativo = 0;
+var globalNegative = 0;
 
     listTransactions();
 
     /**
-     * 
+     * Show the transaction table
      */
-    function showTable(tabelaTotal){
+    function showTable(totalTable){
       
         var total = 0
-        for (let i = 0; i < tabelaTotal.length; i++){
-            total += parseFloat(tabelaTotal[i].value); 
+        for (let i = 0; i < totalTable.length; i++){
+            total += parseFloat(totalTable[i].value); 
             var table = document.getElementById("idtab");
             var row = table.insertRow(table.length);
             var cell1 = row.insertCell(0);
             var cell2 = row.insertCell(1);
             var cell3 = row.insertCell(2);
-            cell1.innerHTML = tabelaTotal[i].description;
-            cell2.innerHTML = tabelaTotal[i].value;
-            cell3.innerHTML = tabelaTotal[i].date;
+            cell1.innerHTML = totalTable[i].description;
+            cell2.innerHTML = totalTable[i].value;
+            cell3.innerHTML = totalTable[i].date;
         }  
-        document.getElementById("somaTotal").innerHTML = total;
+        document.getElementById("totalSum").innerHTML = total.toFixed(2);
     }
 
     /**
-     * Create the array to 
+     * Create the array to send on sendTrans()
      */
     function addTable(){
 
         var description = document.getElementById("description").value;
-        var valor = document.getElementById("value").value;
-        var data = document.getElementById("date").value;
+        var value = document.getElementById("value").value;
+        var date = document.getElementById("date").value;
         var exp = document.getElementById("expense").value;
-        valor = parseFloat(valor);
-        const tabelaEnviar = [];
-        var textoData = "";
-        var textoData = '' + data[8] + data[9] + "/" + data[5] + data[6] + "/" + data[0] + data[1] + data[2] + data[3];
+        value = parseFloat(value);
+        var dateText = "";
+        var dateText = '' + date[8] + date[9] + "/" + date[5] + date[6] + "/" + date[0] + date[1] + date[2] + date[3];
         var oReq = new XMLHttpRequest();
         var dict = {};
         dict.description = description;
 
-        if (globalNegativo == 1){
-            if (valor<0){
-                valor *= -1;
+        if (globalNegative == 1){
+            if (value<0){
+                value *= -1;
             }
-            dict.value = 0 - valor;
+            dict.value = 0 - value;
         }
 
         else{
-            dict.value = valor;
+            dict.value = value;
         }
     
-        dict.date = textoData;
+        dict.date = dateText;
         sendTrans(dict);
     }
 
@@ -95,6 +94,6 @@ var globalNegativo = 0;
 
     }
     
-    function positiveValue() { console.log("Alo"); globalNegativo = 0; }
+    function positiveValue() { console.log("Alo"); globalNegative = 0; }
 
-    function negativeValue() { console.log("Alo2"); globalNegativo = 1; }
+    function negativeValue() { console.log("Alo2"); globalNegative = 1; }
