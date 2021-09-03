@@ -1,243 +1,53 @@
 <!doctype html>
 <html lang="en">
-  <head>
+
+<head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="style.css" media="screen" />
-
     <title>Friendly Budget</title>
-  </head>
-  <body>
-      
-      <nav class="cima">
-        
-      </nav>
-      <center>
-      
-      <div class="externa">
-          
-          <div class="add">
-              
-              <div class="ajuste">
-                 
+</head>
 
-                      <input type="text" name="description"   id="description" class="nome" placeholder="Name"> 
-                      <input type="text" name="value"  id="value" class="valor" placeholder="Value" >
-                      <input type="date" name="date"   id="date" class="data">
+<body>
+    <nav class="cima">
+    </nav>
+    <center>
+        <div class="externa">
+            <div class="add">
+                <div class="ajuste">
+                    <input type="text" name="description" id="description" class="nome" placeholder="Name">
+                    <input type="text" name="value" id="value" class="valor" placeholder="Value">
+                    <input type="date" name="date" id="date" class="data">
+                    <input type="radio" name="calculo" onclick="positiveValue()" checked><font size="4px">Gains</font>
+                    <input type="radio" name="calculo" onclick="negativeValue()" id="expense"><font size="4px">Expense</font>
+                    <button class="btnAdd" onclick="addTable()">ADD</button>
+                </div>
+            </div>
+            <div class="tabela">
+                <table class="bordaExterna colunas" id="idtab">
+                    <thead class="borda ">
+                        <tr>
+                            <th class="borda bordaExterna">Transaction</th>
+                            <th class="borda bordaExterna">Value</th>
+                            <th class="borda bordaExterna">Date</th>
+                        </tr>
+                    </thead>
+                    <tbody class="borda">
+                        <tr>
 
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="total">
+                <div class="txtTotal">Total: R$</div>
+                <div id="somaTotal"></div>
+            </div>
+        </div>
+    </center>
+    <script src="calculoJS.js">
+    </script>
+</body>
 
-                      <input type="radio" name="calculo" onclick="valorPositivo()" checked>Gains
-                      <input type="radio" name="calculo" onclick="valorNegativo()" id="expense" >Expense
-
-
-                      <button class="btnAdd" onclick="adicionarTabela()">ADD</button>
-
-                
-              </div>
-          </div>
-          
-          
-
-          <div class="tabela" >
-              <table class= "bordaExterna colunas" id="idtab">
-                <thead class= "borda ">
-                    <tr>
-                        <th class= "borda bordaExterna">Transaction</th>
-                        <th class= "borda bordaExterna">Value</th>
-                        <th class= "borda bordaExterna">Date</th>
-                    </tr>
-                </thead>
-                
-                <tbody class= "borda">
-                    <tr>
-                        
-                        
-                       
-                    </tr>
-                    
-                </tbody>
-              
-              
-              </table>
-              
-              
-          </div>
-          
-          
-          <div class= "total">
-              
-              <div class="txtTotal">Total: R$</div><div id="somaTotal"></div>
-          </div>
-          
-          
-          
-          
-      
-      </div>
-          
-      </center>
-
-      
-      <script>
-          
-          var globalNegativo = 0;
-          
-          //const tabelaTotal = [ 
-          //    { "description": "compras", "value": 299.00, "date": "12/02/2021"  },  
-          //    { "description": "agiota", "value": -500.00, "date": "02/02/2022"  }, 
-          //    {"description": "roupas", "value": 15099.40, "date": "12/02/1990"  }]
-          
-          //window.load = mostrarTabela(); 
-          listTransactions();
-          
-          function mostrarTabela(tabelaTotal){
-            
-            var total = 0;
-
-            for (let i = 0; i < tabelaTotal.length; i++) {
-                 
-                 total += parseFloat(tabelaTotal[i].value);
-                  
-                  var table = document.getElementById("idtab");
-
-
-                  var row = table.insertRow(table.length);
-                  var cell1 = row.insertCell(0);
-                  var cell2 = row.insertCell(1);
-                  var cell3 = row.insertCell(2);
-                  cell1.innerHTML = tabelaTotal[i].description;
-                  cell2.innerHTML = tabelaTotal[i].value;
-                  cell3.innerHTML = tabelaTotal[i].date;
-
-                    
-
-              }  
-            
-            document.getElementById("somaTotal").innerHTML = total;
-              
-          }
-
-          
-          
-          // -------------------------------
-          
- 
-          // -----------------------------
-          function adicionarTabela(){
-
-              var description = document.getElementById("description").value;
-              var valor = document.getElementById("value").value;
-              var data = document.getElementById("date").value;
-              var exp = document.getElementById("expense").value;
-              
-              valor = parseFloat(valor)
-              
-              const tabelaEnviar = [];
-              
-              var textoData = "";
-              
-              var textoData = '' + data[8] + data[9] + "/" + data[5] + data[6] + "/" + data[0] + data[1] + data[2] + data[3];
-              var oReq = new XMLHttpRequest();
-              
-//   
-//              var table = document.getElementById("idtab");
-//              var row = table.insertRow(table.length);
-//              var cell1 = row.insertCell(0);
-//              var cell2 = row.insertCell(1);
-//              var cell3 = row.insertCell(2);
-              
-//              cell1.innerHTML = nome;
-//            
-              var dict = {};
-              dict.description = description;
-              
-              
-              
-              if (globalNegativo == 1){
-                  if (valor<0){
-                      valor *= -1;
-                  }
-                  
-//                  cell2.innerHTML = 0 - valor;
-                  dict.value = 0-valor;
-              }
-              else{
-//                  cell2.innerHTML = valor;
-                  dict.value = valor;
-              }
-              
-//              cell3.innerHTML = textoData;    
-                dict.date = textoData;
-              
-          
-
-            enviarAdd(dict);
-            
-              
-            
-          }
-          
-          function enviarAdd(dict){
-              
-            
-            var oReq = new XMLHttpRequest();
-            
-            oReq.responseType = "text";
-          
-            oReq.onload = function() {
-                  
-                location.reload();
-                mostrarTabela(JSON.parse(this.response));
-                
-
-            };
-            oReq.onerror = function(e) {
-                console.log("Something went wrong");
-            };
-            oReq.open("put", "http://localhost:8080/add", true);
-            
-            oReq.send(JSON.stringify(dict));
-              
-          }
-
-          function listTransactions(){
-            var oReq = new XMLHttpRequest();
-            
-            oReq.responseType = "text";
-            
-            oReq.onload = function() {
-
-                //location.reload();
-                mostrarTabela(JSON.parse(this.response));
-
-            };
-            oReq.onerror = function(e) {
-                console.log("Something went wrong");
-            };
-            oReq.open("get", "http://localhost:8080/transactions", true);
-            oReq.send();
-          }
-          
-          function valorPositivo(){
-              
-              globalNegativo = 0;
-              
-          }
-          function valorNegativo(){
-              
-              globalNegativo = 1;
-              
-          }
-
-          
-      </script>
-      
-  </body>
 </html>
-
-
-
-
-
-

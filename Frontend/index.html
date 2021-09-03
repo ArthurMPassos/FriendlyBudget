@@ -1,85 +1,27 @@
 <!doctype html>
 <html lang="en">
-  <head>
+
+<head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="styleLogin.css" media="screen" />
-
     <title>Friendly Budget</title>
-  </head>
-  <body>
-      
-      <center>
-      
-      
-          <div class="externaLogin">
-              <p>FRIENDLY BUDGET</p>
-              <div class="internaLogin">
-                  
-              
-              <p>Login</p>
+</head>
 
-                    <input type="text" id="idLogin" name="login" class="username" placeholder="Username" required>
-                    
-                    <button class="btnLogin" onclick="login2()">Enter</button>
+<body>
+    <center>
+        <div class="externaLogin">
+            <p>FRIENDLY BUDGET</p>
+            <div class="internaLogin">
+                <p>Login</p>
+                <input type="text" id="idLogin" name="login" class="username" placeholder="Username" required>
+                <button class="btnLogin" onclick="login2()">Enter</button>
+            </div>
+        </div>
+    </center>
+    <script src="loginJS.js">
+    </script>
+</body>
 
-              
-              </div>
-              
-          
-          </div>
-          
-             
-      </center>
-
-      <script>
-        function login2() {
-        
-            var name = document.getElementById("idLogin").value;
-            
-            var oReq = new XMLHttpRequest();
-            
-            oReq.responseType = "text";
-
-            oReq.onload = function() {
-                
-                // this.response vai retornar a string "true" ou "false"
-                if(eval(this.response)){
-                  //accountAutorized(name);
-                  window.location.href = "calculo.html";
-                  
-                  
-                }
-                else{
-                  
-                  accountNotAuthorized(name);
-                  
-                }
-            };
-            oReq.onerror = function(e) {
-                console.log("Something went wrong");
-            };
-            oReq.open("post", "http://localhost:8080/login", true);
-            oReq.send(name);
-        }
-
-        function addTransactions(transaction) {
-          var oReq = new XMLHttpRequest();
-          oReq.responseType = "text";
-          oReq.onload = function() {
-              showTransactions( JSON.parse(this.response));
-          };
-          oReq.onerror = function(e) {
-              console.log("Something went wrong");
-          };
-          oReq.open("put", "http://localhost:8080/add", true);
-          oReq.send(transaction);
-        }
-
-
-      </script>
-
-      
-  </body>
 </html>
