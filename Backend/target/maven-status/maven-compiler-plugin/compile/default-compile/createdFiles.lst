@@ -1,0 +1,12 @@
+friendly\budget\backend\models\TransactionDTO.class
+friendly\budget\backend\resource\Requests.class
+friendly\budget\backend\models\Transaction.class
+friendly\budget\backend\DAO\UserDAO.class
+friendly\budget\backend\tests\UserTests.class
+friendly\budget\backend\config\AppConfig.class
+friendly\budget\backend\DAO\TransactionDAO.class
+friendly\budget\backend\util\JsonUtil.class
+friendly\budget\backend\config\SimpleCORSFilter.class
+friendly\budget\backend\models\User.class
+friendly\budget\backend\tests\TransactionTests.class
+friendly\budget\backend\MyApplication.class
