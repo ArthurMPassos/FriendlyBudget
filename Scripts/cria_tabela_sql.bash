@@ -5,16 +5,15 @@ DATABASE=friendlybudget
 
 echo "Creating MySQL user, database and exemple user (Gabriel)"
 mysql -u root << MYSQL_SCRIPT
-CREATE DATABASE $DATABASE;
 CREATE USER '$USER'@'localhost' IDENTIFIED BY '$PASS';
 GRANT ALL PRIVILEGES ON $USER.* TO '$USER'@'localhost';
 FLUSH PRIVILEGES;
 
 
 USE $DATABASE
-CREATE SCHEMA IF NOT EXISTS friendlyBudget;
+CREATE SCHEMA IF NOT EXISTS $DATABASE;
 
-USE friendlyBudget;
+USE $DATABASE;
 
 create table USERS(
     NAME varchar(50) NOT NULL PRIMARY KEY
