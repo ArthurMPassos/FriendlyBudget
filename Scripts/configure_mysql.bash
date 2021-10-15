@@ -1,7 +1,7 @@
 #!/bin/bash
 USER=admin
 PASS=admin
-DATABASE=friendlybudget
+DATABASE=friendlyBudget
 
 echo "Creating MySQL user, database and exemple user (Gabriel)"
 mysql -u root << MYSQL_SCRIPT
