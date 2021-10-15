@@ -7,6 +7,7 @@ echo "Creating MySQL user, database and exemple user (Gabriel)"
 mysql -u root << MYSQL_SCRIPT
 CREATE USER '$USER'@'localhost' IDENTIFIED BY '$PASS';
 GRANT SELECT ON * . * TO '$USER'@'localhost';
+GRANT INSERT ON * . * TO '$USER'@'localhost';
 FLUSH PRIVILEGES;
 
 CREATE SCHEMA IF NOT EXISTS $DATABASE;
