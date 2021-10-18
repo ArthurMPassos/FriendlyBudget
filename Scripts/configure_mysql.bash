@@ -5,6 +5,7 @@ DATABASE=friendlyBudget
 
 echo "Creating MySQL user, database and exemple user (Gabriel)"
 mysql -u root << MYSQL_SCRIPT
+DROP USER '$USER'@'localhost';
 CREATE USER '$USER'@'localhost' IDENTIFIED BY '$PASS';
 GRANT SELECT ON * . * TO '$USER'@'localhost';
 GRANT INSERT ON * . * TO '$USER'@'localhost';

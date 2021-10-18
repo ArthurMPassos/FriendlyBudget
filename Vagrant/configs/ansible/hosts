@@ -1,0 +1,25 @@
+[dbserver]
+192.168.1.21
+
+[frontend]
+192.168.1.22
+
+[backend]
+192.168.1.23
+
+
+
+[dbserver:vars]
+ansible_user=vagrant
+ansible_ssh_private_key_file=/home/vagrant/id_bionic
+ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+
+[frontend:vars]
+ansible_user=vagrant
+ansible_ssh_private_key_file=/home/vagrant/id_bionic
+ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+
+[backend:vars]
+ansible_user=vagrant
+ansible_ssh_private_key_file=/home/vagrant/id_bionic
+ansible_ssh_common_args='-o StrictHostKeyChecking=no'

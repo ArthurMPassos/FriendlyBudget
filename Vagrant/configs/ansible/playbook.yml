@@ -1,0 +1,140 @@
+- name: 1 - Creating Web Application - FriendlyBudget
+  hosts: front
+  become: true
+  gather_facts: yes
+
+  tasks:
+    - name: Install PHP
+      apt:
+        name: php-cli
+        state: present
+        update_cache: yes
+
+    - name: Install git
+      apt:
+       name: git
+       state: present
+       update_cache: yes
+
+    - name: Update APT package manager repositories cache
+      become: yes
+      apt:
+        update_cache: yes
+      
+    - name: git clone project
+      git:
+        repo: https://github.com/ArthurMPassos/FriendlyBudget.git
+        dest: /home/vagrant
+      
+    - name: Start PHP
+      shell: php -S 0.0.0.0:10000 &
+      args:
+        chdir: /home/vagrant/FriendlyBudget/Frontend
+
+
+
+- hosts: backend
+  tasks:
+    - name: Update APT package manager repositories cache
+      become: yes
+      apt:
+        update_cache: yes
+
+    - name: Install Java
+      become: yes
+      apt:
+        name: openjdk-8-jdk-headless
+        state: present
+    
+    - name: git clone project
+      git:
+        repo: https://github.com/ArthurMPassos/FriendlyBudget.git
+        dest: /home/vagrant/FriendlyBudget
+    
+    - name: Run Java Server Backend
+      shell: java -jar friendlyBudget-0.0.1-SNAPSHOT.jar &
+      args:
+        chdir: /home/vagrant/FriendlyBudget/Backend/target
+
+
+- hosts: dbserver
+  tasks:
+    - name: Update APT package manager repositories cache
+      become: yes
+      apt:
+        update_cache: yes
+
+    - name: Install MySQL
+      become: yes
+      apt:
+        name: mysql-server
+        state: present
+  
+    - name: git clone project
+      git:
+        repo: https://github.com/ArthurMPassos/FriendlyBudget.git
+        dest: /home/vagrant/FriendlyBudget
+        force: yes
+  
+    - name: Configure MySQL
+      shell: sudo chmod 777 configure_mysql.bash && sudo ./configure_mysql.bash
+      args:
+        chdir: /home/vagrant/FriendlyBudget/Scripts/
+    
+
+
+# - hosts: ansible
+#   vars:
+#     jenkins:
+#     name: jenkins
+#       jenkins_key_rpmU: https://pkg.jenkins.io/debian-stable/jenkins.io.key
+#       jenkins_key_rpm: https://pkg.jenkins.io/redhat-stable/jenkins.io.key
+
+#   tasks:
+#     - name: Update APT package manager repositories cache
+#       become: true
+#       apt:
+#         update_cache: yes
+#     - name: Install Java using Ansible
+#       become: yes
+#       apt:
+#         name: "{{ packages }}"
+#         state: present
+#       vars:
+#         packages:
+#            - openjdk-11-jdk
+
+#     - name: add jenkins key
+#       apt_key:
+#         state: present
+#         url: "{{ jenkins_key_rpmU }}"
+
+#     - name: "Set EPEL yum repository"
+#       apt_repository:
+#         filename: "{{ item.value.name }}"
+#         repo: "{{ item.value.url }}"
+#         description: "{{ item.value.description }}"
+#       loop:
+#         "{{ lookup('dict',reposU) }}"
+
+#     - name: "Install Java and Jenkins"
+#       apt:
+#         name: "{{ item.value.name }}"
+#         state: present
+#       loop:
+#         "{{ lookup('dict',softwaresU) }}"
+
+#     - name: "Starting jenkins"
+#       service:
+#         name: "jenkins"
+#         state: started
+#         enabled: yes
+
+#     - name: Install Maven using Ansible
+#       become: yes
+#       apt:
+#         name: "{{ packages }}"
+#         state: present
+#       vars:
+#         packages:
+#            - maven
