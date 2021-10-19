@@ -80,7 +80,14 @@
         force: yes
   
     - name: Configure MySQL
-      shell: sudo chmod 777 configure_mysql.bash && sudo ./configure_mysql.bash
+      become: yes
+      shell: chmod 777 configure_mysql.bash
+      args:
+        chdir: /home/vagrant/FriendlyBudget/Scripts/
+
+    - name: Configure MySQL part 2
+      become: yes
+      shell: ./configure_mysql.bash
       args:
         chdir: /home/vagrant/FriendlyBudget/Scripts/
     
