@@ -85,6 +85,16 @@
       args:
         chdir: /home/vagrant/FriendlyBudget/Scripts/
 
+    - name: 'Criar usuario no MySQL'
+      become: yes
+      mysql_user:
+        login_user: root
+        name: admin
+        password: admin
+        priv: '*.*:ALL'
+        host: '%'
+        state: present
+    
     - name: Configure MySQL part 2
       become: yes
       shell: ./configure_mysql.bash

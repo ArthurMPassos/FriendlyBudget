@@ -3,9 +3,10 @@ USER=admin
 PASS=admin
 DATABASE=friendlyBudget
 
-echo "Creating MySQL user, database and exemple user (Gabriel)"
+#echo "Creating MySQL user, database and exemple user (Gabriel)"
+#CREATE USER '$USER'@'192.168.1.21' IDENTIFIED BY '$PASS';
 mysql -u root << MYSQL_SCRIPT
-CREATE USER '$USER'@'192.168.1.21' IDENTIFIED BY '$PASS';
+
 GRANT SELECT ON * . * TO '$USER'@'192.168.1.21';
 GRANT INSERT ON * . * TO '$USER'@'192.168.1.21';
 FLUSH PRIVILEGES;
