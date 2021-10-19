@@ -71,7 +71,13 @@
       apt:
         name: mysql-server
         state: present
-  
+
+    - name: Install Python for MySQL commands
+      become: yes
+      apt:
+        name: python3-mysqldb
+        state: present
+    
     - name: git clone project
       git:
         repo: https://github.com/ArthurMPassos/FriendlyBudget.git
