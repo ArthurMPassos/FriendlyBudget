@@ -1,5 +1,5 @@
 - name: 1 - Creating Web Application - FriendlyBudget
-  hosts: front
+  hosts: frontend
   become: true
   gather_facts: yes
 
@@ -24,7 +24,7 @@
     - name: git clone project
       git:
         repo: https://github.com/ArthurMPassos/FriendlyBudget.git
-        dest: /home/vagrant
+        dest: /home/vagrant/FriendlyBudget
         version: ansible-jenkins
       
     - name: Start PHP

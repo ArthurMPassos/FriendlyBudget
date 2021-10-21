@@ -14,7 +14,7 @@ Vagrant.configure("2") do |config|
   config.vm.define :frontend do |front|
     front.vm.hostname = "front"
     front.vm.network "forwarded_port", guest: 10000, host: 8123, host_ip: "127.0.0.1"
-    front.vm.network "public_network", ip: "192.168.1.22"
+    front.vm.network "public_network", ip: "192.168.1.25"
 
     front.vm.provision "shell",
             inline: "cat /vagrant/configs/id_bionic.pub >> .ssh/authorized_keys"
@@ -46,10 +46,6 @@ Vagrant.configure("2") do |config|
                            chown vagrant:vagrant /home/vagrant/id_bionic"
 
       ansible.vm.provision "shell",
-                  inline: "ansible-playbook -i /vagrant/configs/ansible/hosts \
-                           /vagrant/configs/ansible/playbook.yml"
-                    
-    ansible.vm.provision "shell",
                   inline: "ansible-playbook -i /vagrant/configs/ansible/hosts \
                            /vagrant/configs/ansible/playbook.yml"
   end
