@@ -15,11 +15,11 @@ CREATE SCHEMA IF NOT EXISTS $DATABASE;
 
 USE $DATABASE;
 
-create table USERS(
+create table if not exists USERS(
     NAME varchar(50) NOT NULL PRIMARY KEY
 );
 
-create table TRANSACTIONS(
+create table if not exists TRANSACTIONS(
     NAME varchar(50) NOT NULL,
     FOREIGN KEY (NAME) REFERENCES USERS(NAME),
     DATE char(10) NOT NULL,
