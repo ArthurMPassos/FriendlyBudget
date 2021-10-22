@@ -24,7 +24,7 @@ public class TransactionTests {
     @Bean
     JdbcTemplate jdbcTemplate() throws IllegalAccessException, InvocationTargetException, InstantiationException {
         final String driverClassName = "com.mysql.cj.jdbc.Driver";
-        final String jdbcUrl = "jdbc:mysql://localhost:3306/friendlybudget";
+        final String jdbcUrl = "jdbc:mysql://192.168.1.21:3306/friendlybudget";
         final String username = "admin";
         final String password = "admin";
         final Class<?> driverClass = ClassUtils.resolveClassName(driverClassName, this.getClass().getClassLoader());

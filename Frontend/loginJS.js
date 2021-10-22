@@ -17,7 +17,7 @@ function login2() {
         console.log("Something went wrong");
     };
 
-    oReq.open("post", "http://localhost:8080/login", true);
+    oReq.open("post", "http://192.168.1.23:8080/login", true);
     oReq.send(name);
 }
 
@@ -33,6 +33,6 @@ function addTransactions(transaction) {
         console.log("Something went wrong");
     };
     
-    oReq.open("put", "http://localhost:8080/add", true);
+    oReq.open("put", "http://192.168.1.23:8080/add", true);
     oReq.send(transaction);
 }

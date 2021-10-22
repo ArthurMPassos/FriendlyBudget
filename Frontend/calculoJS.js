@@ -70,7 +70,7 @@ var globalNegative = 0;
             console.log("Something went wrong");
         };
 
-        oReq.open("put", "http://localhost:8080/add", true);
+        oReq.open("put", "http://192.168.1.23:8080/add", true);
         oReq.send(JSON.stringify(dict));
     
     }
@@ -89,7 +89,7 @@ var globalNegative = 0;
             console.log("Something went wrong"); 
         };
 
-        oReq.open("get", "http://localhost:8080/transactions", true);
+        oReq.open("get", "http://192.168.1.23:8080/transactions", true);
         oReq.send();
 
     }

@@ -25,7 +25,7 @@ public class Requests {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    @CrossOrigin(origins = "http://localhost:8080/")
+    @CrossOrigin(origins = "http://192.168.1.23:8080/")
     @PostMapping(path="/login")
     public @ResponseBody boolean login(@RequestBody final String name) {
         final User notAuthenticatedUser = userDAO.login(name,jdbcTemplate);
@@ -38,7 +38,7 @@ public class Requests {
     }
 
     //@PUT
-    @CrossOrigin(origins = "http://localhost:8080/")
+    @CrossOrigin(origins = "http://192.168.1.23:8080/")
     @PutMapping(path="/add")
     public @ResponseBody String add(@RequestBody final String json) {
         final TransactionDTO transactionDTO = JsonUtil.fromJson(json, TransactionDTO.class);
@@ -52,7 +52,7 @@ public class Requests {
         return JsonUtil.toJson(listTransDTO);
     }
 
-    @CrossOrigin(origins = "http://localhost:8080/")
+    @CrossOrigin(origins = "http://192.168.1.23:8080/")
     @GetMapping(path="/transactions")
     public @ResponseBody String getTransactions() {
         List<Transaction> list = (new TransactionDAO()).list(this.user,jdbcTemplate);
