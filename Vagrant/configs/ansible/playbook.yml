@@ -89,7 +89,7 @@
       become: yes
       shell: chmod 777 configure_mysql.bash
       args:
-        chdir: /home/vagrant/FriendlyBudget/Scripts/
+        chdir: FriendlyBudget/Scripts/
 
     - name: 'Criar usuario no MySQL'
       become: yes
@@ -105,7 +105,7 @@
       become: yes
       shell: ./configure_mysql.bash
       args:
-        chdir: /home/vagrant/FriendlyBudget/Scripts/
+        chdir: FriendlyBudget/Scripts/
     
 
 
