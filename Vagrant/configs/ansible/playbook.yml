@@ -101,11 +101,24 @@
         host: '%'
         state: present
     
+    - name: 'Copiar arquivo mysqld.cnf'
+      copy:
+        src: /vagrant/configs/mysqld.cnf
+        dest: /etc/mysql/mysql.conf.d/mysqld.cnf
+        owner: root
+        group: root
+        mode: 0644
+      become: yes
+      notify:
+        - restart mysql
+
     - name: Configure MySQL part 2
       become: yes
       shell: ./configure_mysql.bash
       args:
         chdir: FriendlyBudget/Scripts/
+
+    
     
 
 
