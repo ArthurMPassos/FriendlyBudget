@@ -1,6 +1,4 @@
 package friendly.budget.backend.models;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,11 +10,18 @@ public class User {
     @GeneratedValue(strategy= GenerationType.AUTO)
     final private String name;
 
-    public User (String name){
+    final private String password;
+
+    public User(String name, String password){
         this.name = name;
+        this.password = password;
     }
 
     public String getName() {
         return name;
+    }
+
+    public String getPassword() {
+        return password;
     }
 }

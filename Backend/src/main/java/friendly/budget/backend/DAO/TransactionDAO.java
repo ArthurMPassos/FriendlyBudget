@@ -1,10 +1,8 @@
 package friendly.budget.backend.DAO;
 
 import friendly.budget.backend.models.Transaction;
-import friendly.budget.backend.models.TransactionDTO;
 import friendly.budget.backend.models.User;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -20,7 +18,7 @@ public class TransactionDAO {
     private static Transaction mapTransactionRow(ResultSet rs, int rowNum) {
         try {
             return new Transaction(
-                    new User(rs.getString("NAME")),
+                    rs.getString("NAME"),
                     rs.getFloat("VALUE"),
                     rs.getString("DATE"),
                     rs.getString("DESCRIPTION"));
@@ -39,7 +37,7 @@ public class TransactionDAO {
 
         jdbcTemplate.update(
                 "insert into TRANSACTIONS (NAME, DATE, VALUE, DESCRIPTION) values (?,?,?,?);",
-                transaction.getUser().getName(), transaction.getDate(),transaction.getValue(),
+                transaction.getUsername(), transaction.getDate(),transaction.getValue(),
                 transaction.getDescription());
 
         return (new TransactionDAO()).list (user, jdbcTemplate);

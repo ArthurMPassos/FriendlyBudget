@@ -38,18 +38,18 @@ public class TransactionTests {
     public void InsertTransactionTest(){
 
         //Defining the values for the tests
-        User user = new User("Gabriel"); //Login
+        User user = new User("Gabriel", "gabriel123"); //Login
         TransactionDAO transactionDAO = new TransactionDAO();
         List<Transaction> transactionList;
 
         //Insert transaction on DB (insert function)
-        Transaction transaction = new Transaction(user, (float) 2.99, "01/10/2021", "Lapis");
+        Transaction transaction = new Transaction("Gabriel", (float) 2.99, "01/10/2021", "Lapis");
         transactionDAO.insert(transaction, user, jdbcTemplate);
 
         //Consults transaction on DB (list function)
-        transactionList = transactionDAO.list(user,jdbcTemplate);
+        transactionList = transactionDAO.list(user ,jdbcTemplate);
         int indexLast = transactionList.size() - 1;
-        Assert.assertEquals(transaction.getUser().getName(), transactionList.get(indexLast).getUser().getName());
+        Assert.assertEquals(transaction.getUsername(), transactionList.get(indexLast).getUsername());
         Assert.assertEquals(transaction.getValue(), transactionList.get(indexLast).getValue(),2);
         Assert.assertEquals(transaction.getDate(), transactionList.get(indexLast).getDate());
         Assert.assertEquals(transaction.getDescription(), transactionList.get(indexLast).getDescription());

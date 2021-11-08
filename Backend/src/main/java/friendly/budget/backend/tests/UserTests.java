@@ -1,6 +1,7 @@
 package friendly.budget.backend.tests;
 
 import friendly.budget.backend.DAO.UserDAO;
+import friendly.budget.backend.models.User;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.context.annotation.Bean;
@@ -37,12 +38,15 @@ public class UserTests {
 
         //Defining the values for the tests
         String username = "Joaozinho";
+        String password = "senha123";
+
         UserDAO userDAO = new UserDAO();
 
         //Insert user on DB manually (the sign in was not implemented yet)
-        jdbcTemplate.update("insert into USERS (NAME) values (?);",username);
+        jdbcTemplate.update("insert into USERS (NAME, PASSWORD) values (? , ?);",username,password);
 
         //Consulting user on DB (login operation)
-        Assert.assertEquals(username, userDAO.login(username,jdbcTemplate).getName());
+        User user = new User(username, password);
+        Assert.assertEquals(username, userDAO.login(user,jdbcTemplate).getName());
     }
 }
