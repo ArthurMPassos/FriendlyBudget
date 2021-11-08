@@ -18,6 +18,8 @@ import java.util.List;
 @Controller
 public class Requests {
 
+    public static final String ORIGIN_ADDRESS = "http://192.168.1.23:8080/";
+
     private User user;
     private final TransactionDAO transactionDAO = new TransactionDAO();
     private final UserDAO userDAO = new UserDAO();
@@ -25,10 +27,11 @@ public class Requests {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    @CrossOrigin(origins = "http://192.168.1.23:8080/")
+    @CrossOrigin(origins = ORIGIN_ADDRESS)
     @PostMapping(path="/login")
-    public @ResponseBody boolean login(@RequestBody final String name) {
-        final User notAuthenticatedUser = userDAO.login(name,jdbcTemplate);
+    public @ResponseBody boolean login(@RequestBody final String json) {
+        final User user = JsonUtil.fromJson(json, User.class);
+        final User notAuthenticatedUser = userDAO.login(user,jdbcTemplate);
         if (notAuthenticatedUser != null){
             this.user = notAuthenticatedUser;
             return true;
@@ -38,11 +41,11 @@ public class Requests {
     }
 
     //@PUT
-    @CrossOrigin(origins = "http://192.168.1.23:8080/")
+    @CrossOrigin(origins = ORIGIN_ADDRESS)
     @PutMapping(path="/add")
     public @ResponseBody String add(@RequestBody final String json) {
         final TransactionDTO transactionDTO = JsonUtil.fromJson(json, TransactionDTO.class);
-        List<Transaction> rInsert = transactionDAO.insert(new Transaction(this.user, transactionDTO.getValue(),
+        List<Transaction> rInsert = transactionDAO.insert(new Transaction(this.user.getName(), transactionDTO.getValue(),
                 transactionDTO.getDate(), transactionDTO.getDescription()), this.user, jdbcTemplate);
 
         List<TransactionDTO> listTransDTO = new LinkedList<>();
@@ -52,7 +55,7 @@ public class Requests {
         return JsonUtil.toJson(listTransDTO);
     }
 
-    @CrossOrigin(origins = "http://192.168.1.23:8080/")
+    @CrossOrigin(origins = ORIGIN_ADDRESS)
     @GetMapping(path="/transactions")
     public @ResponseBody String getTransactions() {
         List<Transaction> list = (new TransactionDAO()).list(this.user,jdbcTemplate);
@@ -63,6 +66,14 @@ public class Requests {
         }
 
         return JsonUtil.toJson(listTransDTO);
+    }
+
+    @CrossOrigin(origins = ORIGIN_ADDRESS)
+    @PutMapping(path="/createUser")
+    public @ResponseBody String createUser(@RequestBody final String json) {
+        final User user = JsonUtil.fromJson(json, User.class);
+        userDAO.addUser(user, jdbcTemplate);
+        return "created";
     }
 
     @GetMapping(path="/test")
