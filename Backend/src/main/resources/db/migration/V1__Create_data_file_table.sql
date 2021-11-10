@@ -4,7 +4,8 @@ CREATE SCHEMA IF NOT EXISTS friendlyBudget;
 USE friendlyBudget;
 
 create table USERS(
-    NAME varchar(50) NOT NULL PRIMARY KEY
+    NAME varchar(50) NOT NULL PRIMARY KEY,
+    PASSWORD varchar(50) NOT NULL
 );
 
 create table TRANSACTIONS(

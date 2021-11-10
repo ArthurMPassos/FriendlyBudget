@@ -14,8 +14,9 @@ CREATE SCHEMA IF NOT EXISTS $DATABASE;
 
 USE $DATABASE;
 
-create table USERS(
-    NAME varchar(50) NOT NULL PRIMARY KEY
+create table if not exists USERS(
+    NAME varchar(50) NOT NULL PRIMARY KEY,
+    PASSWORD varchar(50) NOT NULL
 );
 
 create table TRANSACTIONS(
