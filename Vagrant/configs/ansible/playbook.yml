@@ -1,5 +1,96 @@
 - name: 1 - Creating Web Application - FriendlyBudget
-  hosts: frontend
+  hosts: dbserver
+  
+  #handlers:
+  #  - name: restart mysql
+  #    service:
+  #      name: mysql
+  #      state: restarted
+  #    become: yes
+  
+  tasks:
+    - name: Update APT package manager repositories cache
+      become: yes
+      apt:
+        update_cache: yes
+
+    - name: Install MySQL
+      become: yes
+      apt:
+        name: mysql-server
+        state: present
+
+    - name: Install Python for MySQL commands
+      become: yes
+      apt:
+        name: python3-mysqldb
+        state: present
+    
+    - name: git clone project
+      git:
+        repo: https://github.com/ArthurMPassos/FriendlyBudget.git
+        dest: /home/vagrant/FriendlyBudget
+        version: ansible-jenkins
+        force: yes
+
+    - name: 'Copiar arquivo mysqld.cnf'
+      copy:
+        src: /vagrant/configs/mysqld.cnf
+        dest: /etc/mysql/mysql.conf.d/mysqld.cnf
+        owner: root
+        group: root
+        mode: 0644
+      become: yes
+      #notify: 
+      #  - restart mysql
+
+    - name: Configure MySQL
+      become: yes
+      shell: chmod 777 configure_mysql.bash
+      args:
+        chdir: FriendlyBudget/Scripts/
+
+    - name: 'Criar usuario no MySQL'
+      become: yes
+      mysql_user:
+        login_user: root
+        name: admin
+        password: admin
+        priv: '*.*:ALL'
+        host: '%'
+        state: present
+
+    - name: Configure MySQL part 2
+      become: yes
+      shell: ./configure_mysql.bash
+      args:
+        chdir: FriendlyBudget/Scripts/  
+
+- hosts: backend
+  tasks:
+    - name: Update APT package manager repositories cache
+      become: yes
+      apt:
+        update_cache: yes
+
+    - name: Install Java
+      become: yes
+      apt:
+        name: openjdk-8-jdk-headless
+        state: present
+    
+    - name: git clone project
+      git:
+        repo: https://github.com/ArthurMPassos/FriendlyBudget.git
+        dest: /home/vagrant/FriendlyBudget
+        version: ansible-jenkins
+    
+    - name: Run Java Server Backend
+      shell: java -jar friendlyBudget-0.0.1-SNAPSHOT.jar &
+      args:
+        chdir: /home/vagrant/FriendlyBudget/Backend/target
+
+- hosts: frontend
   become: true
   gather_facts: yes
 
@@ -31,95 +122,6 @@
       shell: php -S 0.0.0.0:10000 &
       args:
         chdir: /home/vagrant/FriendlyBudget/Frontend
-
-
-
-- hosts: backend
-  tasks:
-    - name: Update APT package manager repositories cache
-      become: yes
-      apt:
-        update_cache: yes
-
-    - name: Install Java
-      become: yes
-      apt:
-        name: openjdk-8-jdk-headless
-        state: present
-    
-    - name: git clone project
-      git:
-        repo: https://github.com/ArthurMPassos/FriendlyBudget.git
-        dest: /home/vagrant/FriendlyBudget
-        version: ansible-jenkins
-    
-    - name: Run Java Server Backend
-      shell: java -jar friendlyBudget-0.0.1-SNAPSHOT.jar &
-      args:
-        chdir: /home/vagrant/FriendlyBudget/Backend/target
-
-
-- hosts: dbserver
-  tasks:
-    - name: Update APT package manager repositories cache
-      become: yes
-      apt:
-        update_cache: yes
-
-    - name: Install MySQL
-      become: yes
-      apt:
-        name: mysql-server
-        state: present
-
-    - name: Install Python for MySQL commands
-      become: yes
-      apt:
-        name: python3-mysqldb
-        state: present
-    
-    - name: git clone project
-      git:
-        repo: https://github.com/ArthurMPassos/FriendlyBudget.git
-        dest: /home/vagrant/FriendlyBudget
-        version: ansible-jenkins
-        force: yes
-  
-    - name: Configure MySQL
-      become: yes
-      shell: chmod 777 configure_mysql.bash
-      args:
-        chdir: FriendlyBudget/Scripts/
-
-    - name: 'Criar usuario no MySQL'
-      become: yes
-      mysql_user:
-        login_user: root
-        name: admin
-        password: admin
-        priv: '*.*:ALL'
-        host: '%'
-        state: present
-    
-    - name: 'Copiar arquivo mysqld.cnf'
-      copy:
-        src: /vagrant/configs/mysqld.cnf
-        dest: /etc/mysql/mysql.conf.d/mysqld.cnf
-        owner: root
-        group: root
-        mode: 0644
-      become: yes
-      notify:
-        - restart mysql
-
-    - name: Configure MySQL part 2
-      become: yes
-      shell: ./configure_mysql.bash
-      args:
-        chdir: FriendlyBudget/Scripts/
-
-    
-    
 
 
 # - hosts: ansible
