@@ -28,6 +28,6 @@ create table if not exists TRANSACTIONS(
     DESCRIPTION varchar(50)
 );
 
-INSERT INTO USERS (NAME) VALUES ('Gabriel');
+INSERT INTO USERS (NAME,PASSWORD) VALUES ('Gabriel','senha123');
 
 MYSQL_SCRIPT
