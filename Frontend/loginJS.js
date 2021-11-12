@@ -9,7 +9,8 @@ function login2() {
             window.location.href = "calculo.html";
         }
         else {
-            accountNotAuthorized(name);
+            console.log("Login Inválido");
+            //accountNotAuthorized(name);
         }
     };
 
@@ -37,7 +38,8 @@ function createUser() {
             window.location.href = "calculo.html";
         }
         else {
-            accountNotAuthorized(name);
+            console.log("Sign In Inválido");
+            //accountNotAuthorized(name);
         }
     };
 

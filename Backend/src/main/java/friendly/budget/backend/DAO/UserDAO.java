@@ -20,7 +20,7 @@ public class  UserDAO {
     }
     //@PostMapping(path="/login")
     public /*@ResponseBody*/ User login (User user, JdbcTemplate jdbcTemplate) {
-        final List<User> query = jdbcTemplate.query("select NAME from USERS where NAME = (?) and PASSWORD = (?);"
+        final List<User> query = jdbcTemplate.query("select NAME,PASSWORD from USERS where NAME = (?) and PASSWORD = (?);"
                 , UserDAO::mapUserRow, user.getName(), user.getPassword());
         if (query.isEmpty()) return null;
         else{return query.get(0);}
@@ -30,8 +30,8 @@ public class  UserDAO {
         final List<User> query = jdbcTemplate.query("select NAME from USERS where NAME = (?);"
             , UserDAO::mapUserRow, user.getName());
         if (query.isEmpty()) {
-            jdbcTemplate.query("insert into USERS (NAME) values (?);"
-                    , UserDAO::mapUserRow, user.getName());
+            jdbcTemplate.query("insert into USERS (NAME,PASSWORD) values (?,?);"
+                    , UserDAO::mapUserRow, user.getName(), user.getPassword());
             return true;
         }
         return false;
