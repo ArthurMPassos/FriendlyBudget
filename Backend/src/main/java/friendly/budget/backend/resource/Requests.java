@@ -18,7 +18,7 @@ import java.util.List;
 @Controller
 public class Requests {
 
-    public static final String ORIGIN_ADDRESS = "http://192.168.1.23:8080/";
+    public static final String ORIGIN_ADDRESS = "http://localhost:8080/";
 
     private User user;
     private final TransactionDAO transactionDAO = new TransactionDAO();

@@ -21,7 +21,7 @@ function login2() {
     user.name = name;
     user.password = password;
 
-    oReq.open("post", "http://192.168.1.23:8080/login", true);
+    oReq.open("post", "http://localhost:8080/login", true);
     oReq.send(JSON.stringify(user));
 }
 
@@ -49,6 +49,6 @@ function createUser() {
     user.name = name;
     user.password = password;
 
-    oReq.open("post", "http://192.168.1.23:8080/createUser", true);
+    oReq.open("post", "http://localhost:8080/createUser", true);
     oReq.send(JSON.stringify(user));
 }
