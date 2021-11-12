@@ -30,8 +30,7 @@ public class  UserDAO {
         final List<User> query = jdbcTemplate.query("select NAME from USERS where NAME = (?);"
             , UserDAO::mapUserRow, user.getName());
         if (query.isEmpty()) {
-            jdbcTemplate.query("insert into USERS (NAME,PASSWORD) values (?,?);"
-                    , UserDAO::mapUserRow, user.getName(), user.getPassword());
+            jdbcTemplate.update("insert into USERS (NAME,PASSWORD) values (?,?);", user.getName(), user.getPassword());
             return true;
         }
         return false;
