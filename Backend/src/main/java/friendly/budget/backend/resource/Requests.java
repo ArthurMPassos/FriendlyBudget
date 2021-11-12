@@ -69,7 +69,7 @@ public class Requests {
     }
 
     @CrossOrigin(origins = ORIGIN_ADDRESS)
-    @PutMapping(path="/createUser")
+    @PostMapping(path="/createUser")
     public @ResponseBody String createUser(@RequestBody final String json) {
         final User user = JsonUtil.fromJson(json, User.class);
         userDAO.addUser(user, jdbcTemplate);

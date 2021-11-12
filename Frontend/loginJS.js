@@ -34,6 +34,7 @@ function createUser() {
     oReq.responseType = "text";
 
     oReq.onload = function () {
+        console.log("Sign In Inválido");
         if (eval(this.response)) {
             window.location.href = "calculo.html";
         }
